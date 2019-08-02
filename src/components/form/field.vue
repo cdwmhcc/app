@@ -7,21 +7,25 @@
         name="info"
         size="18"
         icon-style="outline"
-        class="note field-action"
+        class="note"
         color="darker-gray"
       />
-      {{ field.name || $helpers.formatTitle(field.field) }}
-      <v-icon v-if="field.required !== false" class="required" name="star" color="light-gray" sup />
       <v-contextual-menu
         v-if="field.readonly === false"
-        class="options field-action"
-        placement="bottom-start"
+        class="field-action"
+        placement="right-start"
         :options="options"
         :icon="null"
         @click="emitChange"
       >
-        <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="field-action" />
+        {{ field.name || $helpers.formatTitle(field.field) }}
+        <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
+        <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="field-action-icon" />
       </v-contextual-menu>
+      <span v-else class="field-static">
+        {{ field.name || $helpers.formatTitle(field.field) }}
+        <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
+      </span>
       <v-toggle
         v-if="batchMode"
         class="batch-toggle"
@@ -196,20 +200,41 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.note {
+  color: var(--lighter-gray);
+  vertical-align: -4px;
+  margin-right: 4px;
+}
+
 .name {
   font-size: var(--size-2);
   margin-bottom: 10px;
   color: var(--darkest-gray);
 }
 
+.required {
+  margin-top: -8px;
+}
+
+.field-static {
+  //
+}
+
 .field-action {
+  display: inline-block;
   transition: all var(--fast) var(--transition);
-  color: var(--light-gray);
-  vertical-align: -4px;
   &:hover {
-    color: var(--darker-gray);
+    color: var(--accent);
+    .field-action-icon {
+      color: var(--accent);
+    }
   }
+}
+
+.field-action-icon {
+  color: var(--lighter-gray);
+  vertical-align: -4px;
 }
 
 .note {
@@ -220,14 +245,5 @@ export default {
   display: inline-block;
   vertical-align: -4px;
   margin-left: 4px;
-}
-
-.options {
-  display: inline-block;
-  margin-left: -3px;
-}
-
-.required {
-  margin-left: -0.5ch;
 }
 </style>
