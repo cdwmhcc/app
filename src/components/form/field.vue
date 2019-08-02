@@ -23,7 +23,11 @@
         <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="field-action-icon" />
       </v-contextual-menu>
       <span v-else class="field-static">
+        <!--
+        -->
         {{ field.name || $helpers.formatTitle(field.field) }}
+        <!--
+        -->
         <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
       </span>
       <v-toggle
