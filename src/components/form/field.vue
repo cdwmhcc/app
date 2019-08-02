@@ -18,16 +18,12 @@
         :icon="null"
         @click="emitChange"
       >
-        {{ field.name || $helpers.formatTitle(field.field) }}
+        <span class="field-label">{{ field.name || $helpers.formatTitle(field.field) }}</span>
         <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
-        <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="field-action-icon" />
+        <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="dropdown" />
       </v-contextual-menu>
       <span v-else class="field-static">
-        <!--
-        -->
-        {{ field.name || $helpers.formatTitle(field.field) }}
-        <!--
-        -->
+        <span class="field-label">{{ field.name || $helpers.formatTitle(field.field) }}</span>
         <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
       </span>
       <v-toggle
@@ -207,8 +203,10 @@ export default {
 <style scoped lang="scss">
 .note {
   color: var(--lighter-gray);
-  vertical-align: -4px;
+  vertical-align: middle;
   margin-right: 4px;
+  margin-top: -1px;
+  cursor: help;
 }
 
 .name {
@@ -218,11 +216,12 @@ export default {
 }
 
 .required {
+  display: inline-block;
   margin-top: -8px;
 }
 
 .field-static {
-  //
+  display: inline-block;
 }
 
 .field-action {
@@ -230,19 +229,14 @@ export default {
   transition: all var(--fast) var(--transition);
   &:hover {
     color: var(--accent);
-    .field-action-icon {
+    .dropdown {
       color: var(--accent);
     }
   }
-}
-
-.field-action-icon {
-  color: var(--lighter-gray);
-  vertical-align: -4px;
-}
-
-.note {
-  cursor: help;
+  .dropdown {
+    color: var(--lighter-gray);
+    vertical-align: -2px;
+  }
 }
 
 .batch-toggle {
