@@ -79,12 +79,15 @@ export default {
     valuesByLang() {
       if (!this.value) return {};
 
-      return _.keyBy(
-        this.value,
-        (valueItem) => {
-          return _.get(valueItem, this.options.translationLanguageField);
-        }
-      );
+      let firstKey = this.options.translationLanguageField;
+      let secondKey = this.options.languagesPrimaryKeyField;
+      return _(this.value)
+        .map(v => {
+          v[firstKey] = v[firstKey][secondKey] || v[firstKey];
+          return v;
+        })
+        .keyBy(this.options.translationLanguageField)
+        .value();
     },
     fieldManyName() {
       return this.relation.field_many.field;
@@ -143,10 +146,10 @@ export default {
             ];
       } else {
         newValue = this.value.map(translation => {
+          let language = translation[this.options.translationLanguageField];
           if (
-            translation[this.options.translationLanguageField][
-              this.options.languagesPrimaryKeyField
-            ] === this.activeLanguage
+            language === this.activeLanguage ||
+            language[this.options.languagesPrimaryKeyField] === this.activeLanguage
           ) {
             return {
               ...translation,
