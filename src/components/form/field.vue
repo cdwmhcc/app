@@ -1,15 +1,6 @@
 <template>
   <div :data-collection="collection" :data-field="field.field">
     <div v-if="showLabel" class="name">
-      <v-icon
-        v-if="field.note"
-        v-tooltip="$helpers.snarkdown(field.note)"
-        name="info"
-        size="18"
-        icon-style="outline"
-        class="note"
-        color="darker-gray"
-      />
       <v-contextual-menu
         v-if="field.readonly === false"
         class="field-action"
@@ -64,6 +55,7 @@
         "
       />
     </div>
+    <div v-if="field.note" class="note" v-html="$helpers.snarkdown(field.note)"></div>
   </div>
 </template>
 
@@ -203,10 +195,7 @@ export default {
 <style scoped lang="scss">
 .note {
   color: var(--lighter-gray);
-  vertical-align: middle;
-  margin-right: 4px;
-  margin-top: -1px;
-  cursor: help;
+  margin-top: 4px;
 }
 
 .name {
@@ -218,6 +207,7 @@ export default {
 .required {
   display: inline-block;
   margin-top: -8px;
+  margin-left: 2px;
 }
 
 .field-static {
