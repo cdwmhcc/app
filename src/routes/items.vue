@@ -210,10 +210,15 @@ export default {
     },
     fields() {
       const fields = this.$store.state.collections[this.collection].fields;
-      return Object.values(fields).map(field => ({
+      const fieldsArray = Object.values(fields).map(field => ({
         ...field,
         name: this.$helpers.formatTitle(field.field)
       }));
+
+      //Filter out hidden_browser items.
+      let filteredFields = fieldsArray.filter(field => field.hidden_browse !== true);
+
+      return filteredFields;
     },
     batchURL() {
       return `/collections/${this.collection}/${this.selection
@@ -367,8 +372,10 @@ export default {
       ).field;
     },
     primaryKeyField() {
-      if (!this.fields) return null;
-      return _.find(this.fields, { primary_key: true }).field;
+      const fields = this.$store.state.collections[this.collection].fields;
+      if (!fields) return null;
+      let fieldsObj = _.find(fields, { primary_key: true });
+      return fieldsObj && fieldsObj.field ? fieldsObj.field : null;
     },
     permissions() {
       return this.$store.state.permissions;
